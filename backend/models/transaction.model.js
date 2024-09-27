@@ -21,21 +21,23 @@ const transactionSchema = new mongoose.Schema({
     },
     debit: {
         type: Number,
-        validate: {
-            validator: function (value) {
-                return this.type === "Expenditure" ? value > 0 : value === undefined;
-            },
-            message: "Debit amount must be provided for 'Expenditure' type and greater than 0."
-        }
+        default : 0
+        // validate: {
+        //     validator: function (value) {
+        //         return this.type === "Expenditure" ? value > 0 : value === undefined;
+        //     },
+        //     message: "Debit amount must be provided for 'Expenditure' type and greater than 0."
+        // }
     },
     credit: {
         type: Number,
-        validate: {
-            validator: function (value) {
-                return this.type === "Income" ? value > 0 : value === undefined;
-            },
-            message: "Credit amount must be provided for 'Income' type and greater than 0."
-        }
+        default : 0
+        // validate: {
+        //     validator: function (value) {
+        //         return this.type === "Income" ? value > 0 : value === undefined;
+        //     },
+        //     message: "Credit amount must be provided for 'Income' type and greater than 0."
+        // }
     }
 }, { timestamps: true });
 
