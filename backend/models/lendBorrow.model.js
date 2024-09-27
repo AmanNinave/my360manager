@@ -30,6 +30,6 @@ const lendBorrowSchema = new mongoose.Schema({
 } , { timestamps : true });
 
 
-const message = mongoose.model("LendBorrow" ,lendBorrowSchema );
+const LendBorrow = mongoose.model("LendBorrow" ,lendBorrowSchema );
 
-export default message;
+export default LendBorrow;
