@@ -35,3 +35,16 @@ export const addTransaction = async (req , res )=>{
    }
 }
 
+export const getTransactions = async (req , res )=> {
+    try {
+        const userId = req.user._id;
+
+        const transactionsHistory = await TransactionHistory.findOne({ userId }).populate("transactions");
+
+        res.status(200).json(transactionsHistory.transactions );
+
+    }catch (error){
+        console.log("Error in getMessages controller " , error.message );
+        res.send(500).json({error : "Internal server error"});
+    }
+}
