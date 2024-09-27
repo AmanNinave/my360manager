@@ -15,8 +15,10 @@ const TransactionModal = ({ isOpen, onClose, onSubmit }) => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Adjust debit/credit values based on the type of transaction
     if (formData.type === 'Income') {
       formData.debit = 0; // Clear debit for Income
     } else {
@@ -26,8 +28,30 @@ const TransactionModal = ({ isOpen, onClose, onSubmit }) => {
     // Use custom source if 'Custom' is selected
     const finalSource = formData.source === 'Custom' ? formData.customSource : formData.source;
 
-    onSubmit({ ...formData, source: finalSource });
-    onClose();
+    const finalData = { ...formData, source: finalSource };
+
+    let url = 'http://localhost:3001/api/finance/addtransaction'
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(finalData),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log('Transaction saved:', result);
+       
+        onSubmit(result);
+        onClose(); // Close the modal on successful submission
+      } else {
+        console.error('Error submitting transaction', response.status);
+      }
+    } catch (error) {
+      console.error('Error during submission:', error);
+    }
   };
 
   if (!isOpen) return null;
