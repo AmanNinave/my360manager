@@ -1,26 +1,13 @@
+import { useState } from 'react'
 import './App.css'
-import { Sidebar } from './components/Sidebar'
-import { TopNavBar } from './components/TopNavbar'
-import Dashboard from './pages/Dashboard'
+import AppRouter from './routes/Router'
 
 function App() {
-
+  const [isAuthenticated , setIsAuthenticated ] = useState(true)
   return (
-    <div className="flex h-screen">
-    {/* Sidebar */}
-    <Sidebar />
-
-    {/* Main content area */}
-    <div className="flex-1 flex flex-col">
-      {/* Top Navbar */}
-      <TopNavBar />
-
-      {/* Main content */}
-      <div className="p-6 bg-gray-100 flex-1 overflow-y-auto">
-        <Dashboard/>
-      </div>
-    </div>
-  </div>
+      <>
+      <AppRouter isAuthenticated={isAuthenticated}/>
+      </>
   )
 }
 
