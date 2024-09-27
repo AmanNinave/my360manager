@@ -1,5 +1,6 @@
 import React, { useEffect, useReducer, useRef, useState } from 'react'
 import TransactionModal from '../components/TransactionModelBox';
+import TransactionTable from '../components/TransactionTable';
 const Dashboard = () => {
   const [isModalOpen, setModalOpen] = useState(false);
 
@@ -12,10 +13,10 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
+    <div className="relative flex flex-col items-center min-h-screen">
       <button
         onClick={openModal}
-        className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600"
+        className="absolute top-4 right-4 bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600"
       >
         Add Transaction
       </button>
@@ -25,6 +26,10 @@ const Dashboard = () => {
         onClose={closeModal}
         onSubmit={handleTransactionSubmit}
       />
+
+      <div className="flex justify-center items-center flex-1">
+        <TransactionTable />
+      </div>
     </div>
   );
 }

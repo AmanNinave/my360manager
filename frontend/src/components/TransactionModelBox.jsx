@@ -29,7 +29,7 @@ const TransactionModal = ({ isOpen, onClose, onSubmit }) => {
     const finalSource = formData.source === 'Custom' ? formData.customSource : formData.source;
 
     const finalData = { ...formData, source: finalSource };
-
+    
     let url = 'http://localhost:3001/api/finance/addtransaction'
     try {
       const response = await fetch(url, {
@@ -38,6 +38,7 @@ const TransactionModal = ({ isOpen, onClose, onSubmit }) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(finalData),
+        credentials: 'include',
       });
 
       if (response.ok) {
