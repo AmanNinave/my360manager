@@ -1,27 +1,32 @@
 import React, { useEffect, useReducer, useRef, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-
+import TransactionModal from '../components/TransactionModelBox';
 const Dashboard = () => {
-  console.log('render');
-  const val = useRef(20);
+  const [isModalOpen, setModalOpen] = useState(false);
 
-  useEffect(()=>{
-    console.log('useEffect')
-  }, [val.current])
+  const openModal = () => setModalOpen(true);
+  const closeModal = () => setModalOpen(false);
 
-  const handleClick = () => {
-    console.log("click function")
-    console.log(val.current)
-    val.current = Math.floor( Math.random()*10 ) ;
-    console.log(val.current)
-  }
+  const handleTransactionSubmit = (formData) => {
+    console.log('Transaction Data Submitted:', formData);
+    // Add transaction logic here
+  };
 
   return (
-    <>
-      <button onClick={handleClick}>click Me</button>
-      <h1>hi</h1>
-    </>
-  )
+    <div className="flex justify-center items-center min-h-screen">
+      <button
+        onClick={openModal}
+        className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600"
+      >
+        Add Transaction
+      </button>
+
+      <TransactionModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        onSubmit={handleTransactionSubmit}
+      />
+    </div>
+  );
 }
 
 export default Dashboard
