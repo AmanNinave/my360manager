@@ -7,9 +7,33 @@ const Dashboard = () => {
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
 
-  const handleTransactionSubmit = (formData) => {
-    console.log('Transaction Data Submitted:', formData);
-    // Add transaction logic here
+  const [transactionsData , setTransactionsData] = useState([]);
+  
+  useEffect(()=>{
+    getData();
+  },[]);
+
+  const getData = async () => {
+
+    try {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_IP}/api/finance/gettransactions`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        setTransactionsData(result);
+       
+      } else {
+        console.error('Error submitting transaction', response.status);
+      }
+    } catch (error) {
+      console.error('Error during submission:', error);
+    }
   };
 
   return (
@@ -24,11 +48,11 @@ const Dashboard = () => {
       <TransactionModal
         isOpen={isModalOpen}
         onClose={closeModal}
-        onSubmit={handleTransactionSubmit}
+        setTransactionsData={setTransactionsData}
       />
 
       <div className="flex justify-center items-center flex-1">
-        <TransactionTable />
+        <TransactionTable transactionsData={transactionsData} />
       </div>
     </div>
   );

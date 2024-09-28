@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { incomeSources, expenditureSources } from '../constants/finance.constants';
-const TransactionModal = ({ isOpen, onClose, onSubmit }) => {
+
+const TransactionModal = ({ isOpen, onClose, setTransactionsData }) => {
   const [formData, setFormData] = useState({
     type: 'Expenditure', 
     source: '',
@@ -30,9 +31,8 @@ const TransactionModal = ({ isOpen, onClose, onSubmit }) => {
 
     const finalData = { ...formData, source: finalSource };
     
-    let url = 'http://localhost:3001/api/finance/addtransaction'
     try {
-      const response = await fetch(url, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_IP}/api/finance/addtransaction`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -43,9 +43,8 @@ const TransactionModal = ({ isOpen, onClose, onSubmit }) => {
 
       if (response.ok) {
         const result = await response.json();
-        console.log('Transaction saved:', result);
-       
-        onSubmit(result);
+        console.log(result);
+        setTransactionsData(result)
         onClose(); // Close the modal on successful submission
       } else {
         console.error('Error submitting transaction', response.status);
