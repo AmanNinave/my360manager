@@ -27,7 +27,9 @@ export const addTransaction = async (req , res )=>{
 
     await Promise.all([transactionHistory.save() , newTransaction.save()]);  // This will run in parallel
 
-    res.status(201).json(transactionHistory);
+    const transactionsHistory = await TransactionHistory.findOne({ userId }).populate("transactions");
+
+    res.status(200).json(transactionsHistory.transactions );
     
    } catch (error) {
     console.log("Error from sendMessage controller " + error.message );
