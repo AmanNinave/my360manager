@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import TransactionChart from './TransactionCharts';
 
 const TransactionTable = ({ transactionsData }) => {
   // State to store filter values
@@ -12,7 +13,7 @@ const TransactionTable = ({ transactionsData }) => {
   const [endDateFilter, setEndDateFilter] = useState('');
 
   // State to toggle filter visibility
-  const [showFilters, setShowFilters] = useState(true);
+  const [showFilters, setShowFilters] = useState(false);
 
   // Function to filter transactions based on filter values
   const filteredTransactions = transactionsData.filter((transaction) => {
@@ -139,8 +140,11 @@ const TransactionTable = ({ transactionsData }) => {
         </div>
       )}
 
+      {/* Transactions Chart */}
+      <TransactionChart transactionsData={transactionsData} />
+
       {/* Transactions Table */}
-      <div style={{ height: showFilters ? '50vh' : '80vh' }} className={` overflow-y-auto`}>
+      <div className={`h-[85vh] overflow-y-auto`}>
         <table className="w-full bg-white border border-gray-300">
           <thead className="sticky top-0 bg-blue-500">
             <tr className="text-white">

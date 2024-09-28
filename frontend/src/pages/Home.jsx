@@ -15,7 +15,7 @@ const Home = () => {
           <TopNavBar />
     
           {/* Main content */}
-          <div className="p-6 bg-gray-100 max-h-[90vh]  flex-1 overflow-hidden">
+          <div className="p-6 bg-gray-100 max-h-[90vh]  flex-1 overflow-y-auto">
             <Dashboard/>
           </div>
         </div>
