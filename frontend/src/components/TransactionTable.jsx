@@ -149,7 +149,7 @@ const TransactionTable = ({ transactionsData , openModal }) => {
       )}
 
       {/* Transactions Chart */}
-      <TransactionChart transactionsData={transactionsData} />
+      <TransactionChart transactionsData={filteredTransactions} />
 
       {/* Transactions Table */}
       <div className={`h-[85vh] overflow-y-auto`}>

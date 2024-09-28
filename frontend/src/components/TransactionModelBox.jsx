@@ -40,6 +40,14 @@ const TransactionModal = ({ isOpen, onClose, setTransactionsData }) => {
         body: JSON.stringify(finalData),
         credentials: 'include',
       });
+      setFormData({
+        type: 'Expenditure', 
+        source: '',
+        customSource: '', 
+        remark: '',
+        debit: 0,
+        credit: 0,
+      })
 
       if (response.ok) {
         const result = await response.json();

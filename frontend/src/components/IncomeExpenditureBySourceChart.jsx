@@ -20,7 +20,7 @@ const IncomeExpenditureBySourceChart = ({ transactionsData }) => {
       .style("padding", "5px")
       .style("border-radius", "5px")
       .style("visibility", "hidden")
-      .style("pointer-events", "none"); // Prevent blocking cursor interaction
+      .style("pointer-events", "none");
 
     // Income Chart
     const incomeContainerWidth = incomeContainerRef.current.clientWidth;
@@ -54,14 +54,22 @@ const IncomeExpenditureBySourceChart = ({ transactionsData }) => {
 
     const formatNumber = d3.format(".2s");
 
-    incomeSvg.append("g")
+    const xAxis = incomeSvg.append("g")
       .attr("class", "x-axis")
       .attr("transform", `translate(0,${incomeHeight})`)
       .call(d3.axisBottom(incomeX));
 
+    xAxis.selectAll("text")
+      .style("opacity", 0); // Hide all labels initially
+
+    // y ticks values
+    const maxIncome = d3.max(incomeData, d => d.totalIncome);
+    const incomeTicks = Array.from({ length: 10 }, (_, i) => (Math.ceil(maxIncome / 10000) * 1000 * (i + 1))).filter(val => val<= maxIncome);
+
     incomeSvg.append("g")
-      .attr("class", "y-axis")
-      .call(d3.axisLeft(incomeY).tickFormat(formatNumber));
+    .attr("class", "y-axis")
+    .call(d3.axisLeft(incomeY).tickValues(incomeTicks).tickFormat(formatNumber)); // Specify the tick values
+
 
     // Add bars with tooltip on hover
     incomeSvg.selectAll(".bar-income")
@@ -75,7 +83,15 @@ const IncomeExpenditureBySourceChart = ({ transactionsData }) => {
       .attr("fill", "green")
       .on("mouseover", (event, d) => {
         tooltip.style("visibility", "visible")
-          .text(`Income: ${d.totalIncome.toFixed(2)}`);
+          .text(` ${d.totalIncome.toFixed(1)}`);
+
+        // Show only the label for the hovered bar
+        xAxis.selectAll("text")
+          .style("opacity", 0); // Hide all labels
+
+        xAxis.selectAll("text")
+          .filter(source => source === d.source)
+          .style("opacity", 1); // Show the hovered label
       })
       .on("mousemove", (event) => {
         tooltip
@@ -84,9 +100,10 @@ const IncomeExpenditureBySourceChart = ({ transactionsData }) => {
       })
       .on("mouseout", () => {
         tooltip.style("visibility", "hidden");
+        xAxis.selectAll("text").style("opacity", 0); // Hide all labels when not hovering
       });
 
-    // Expenditure Chart
+    // Expenditure Chart (similar process for expenditure chart)
     const expenditureContainerWidth = expenditureContainerRef.current.clientWidth;
     const expenditureContainerHeight = expenditureContainerRef.current.clientHeight;
 
@@ -116,14 +133,26 @@ const IncomeExpenditureBySourceChart = ({ transactionsData }) => {
       .nice()
       .range([expenditureHeight, 0]);
 
-    expenditureSvg.append("g")
+    const expenditureXAxis = expenditureSvg.append("g")
       .attr("class", "x-axis")
       .attr("transform", `translate(0,${expenditureHeight})`)
       .call(d3.axisBottom(expenditureX));
 
+    expenditureXAxis.selectAll("text")
+      .style("opacity", 0); // Hide all labels initially
+
+    // expenditureSvg.append("g")
+    //   .attr("class", "y-axis")
+    //   .call(d3.axisLeft(expenditureY).tickFormat(formatNumber));
+    
+    const maxExpenditure = d3.max(expenditureData, d => d.totalExpenditure);
+    const expenditureTicks = Array.from({ length: 10 }, (_, i) => (Math.ceil(maxExpenditure / 10000) * 1000 * (i + 1))).filter(val => val<= maxExpenditure);
+
     expenditureSvg.append("g")
-      .attr("class", "y-axis")
-      .call(d3.axisLeft(expenditureY).tickFormat(formatNumber));
+    .attr("class", "y-axis")
+    .call(d3.axisLeft(expenditureY).tickValues(expenditureTicks).tickFormat(formatNumber)); // Specify the tick values
+  
+  
 
     // Add bars with tooltip on hover
     expenditureSvg.selectAll(".bar-expenditure")
@@ -137,7 +166,15 @@ const IncomeExpenditureBySourceChart = ({ transactionsData }) => {
       .attr("fill", "blue")
       .on("mouseover", (event, d) => {
         tooltip.style("visibility", "visible")
-          .text(`Expenditure: ${d.totalExpenditure.toFixed(2)}`);
+          .text(` ${d.totalExpenditure.toFixed(1)}`);
+
+        // Show only the label for the hovered bar
+        expenditureXAxis.selectAll("text")
+          .style("opacity", 0); // Hide all labels
+
+        expenditureXAxis.selectAll("text")
+          .filter(source => source === d.source)
+          .style("opacity", 1); // Show the hovered label
       })
       .on("mousemove", (event) => {
         tooltip
@@ -146,14 +183,15 @@ const IncomeExpenditureBySourceChart = ({ transactionsData }) => {
       })
       .on("mouseout", () => {
         tooltip.style("visibility", "hidden");
+        expenditureXAxis.selectAll("text").style("opacity", 0); // Hide all labels when not hovering
       });
 
   }, [transactionsData]);
 
   return (
-    <div style={{ width:'100%', display: 'flex', justifyContent: 'space-evenly' }}>
+    <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'space-evenly' }}>
       {/* Income Chart */}
-      <div ref={incomeContainerRef} style={{ width: '45%', height:'90%', position: 'relative' }}>
+      <div ref={incomeContainerRef} style={{ width: '45%', height: '90%', position: 'relative' }}>
         <h3>Income by Source</h3>
         <svg ref={incomeSvgRef}></svg>
       </div>
