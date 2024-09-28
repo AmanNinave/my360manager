@@ -37,10 +37,10 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="relative flex flex-col items-center min-h-screen">
+    <div className="flex flex-col w-full">
       <button
         onClick={openModal}
-        className="absolute top-4 right-4 bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600"
+        className="absolute right-40 bg-blue-500 text-white px-6 py-2 z-10 rounded-lg hover:bg-blue-600"
       >
         Add Transaction
       </button>
@@ -51,7 +51,7 @@ const Dashboard = () => {
         setTransactionsData={setTransactionsData}
       />
 
-      <div className="flex justify-center items-center flex-1">
+      <div className="relative top-0 flex justify-center items-center flex-1 w-full">
         <TransactionTable transactionsData={transactionsData} />
       </div>
     </div>
