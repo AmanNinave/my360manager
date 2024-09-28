@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import TransactionChart from './TransactionCharts';
 
-const TransactionTable = ({ transactionsData }) => {
+const TransactionTable = ({ transactionsData , openModal }) => {
   // State to store filter values
   const [typeFilter, setTypeFilter] = useState('');
   const [sourceFilter, setSourceFilter] = useState('');
@@ -37,12 +37,20 @@ const TransactionTable = ({ transactionsData }) => {
       {/* Toggle Button for Filters */}
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-lg font-semibold">Transaction Table</h2>
-        <button
-          onClick={() => setShowFilters(!showFilters)}
-          className="bg-blue-500 text-white px-4 py-2 rounded"
-        >
-          {showFilters ? 'Hide Filters' : 'Show Filters'}
-        </button>
+        <div className='flex gap-x-5'>
+          <button
+            onClick={openModal}
+            className=" bg-blue-500 text-white px-6 py-2 z-10 rounded-lg hover:bg-blue-600"
+          >
+            Add Transaction
+          </button>
+          <button
+            onClick={() => setShowFilters(!showFilters)}
+            className="bg-blue-500 text-white px-6 py-2 z-10 rounded-lg hover:bg-blue-600"
+          >
+            {showFilters ? 'Hide Filters' : 'Show Filters'}
+          </button>
+        </div>
       </div>
 
       {/* Conditionally Render Filters Section */}
@@ -148,7 +156,7 @@ const TransactionTable = ({ transactionsData }) => {
         <table className="w-full bg-white border border-gray-300">
           <thead className="sticky top-0 bg-blue-500">
             <tr className="text-white">
-              <th className="py-3 px-4 border-b border-r border-gray-200" style={{ width: '17%' }}>Date</th>
+              <th className="py-3 px-4 border-b border-r border-gray-200" style={{ width: '18%' }}>Date</th>
               <th className="py-3 px-4 border-b border-r border-gray-200" style={{ width: '10%' }}>Type</th>
               <th className="py-3 px-4 border-b border-r border-gray-200" style={{ width: '10%' }}>Source</th>
               <th className="py-3 px-4 border-b border-r border-gray-200" style={{ width: '40%' }}>Remark</th>
@@ -159,7 +167,7 @@ const TransactionTable = ({ transactionsData }) => {
           <tbody>
             {filteredTransactions.map((transaction, index) => (
               <tr key={index} className={transaction.type === 'Income' ? 'bg-green-100' : 'bg-red-100'}>
-                <td className="py-2 px-4 border-b border-r border-gray-200" style={{ width: '17%' }}>{new Date(transaction.updatedAt).toLocaleString()}</td>
+                <td className="py-2 px-4 border-b border-r border-gray-200" style={{ width: '18%' }}>{new Date(transaction.updatedAt).toLocaleString()}</td>
                 <td className="py-2 px-4 border-b border-r border-gray-200" style={{ width: '10%' }}>{transaction.type}</td>
                 <td className="py-2 px-4 border-b border-r border-gray-200" style={{ width: '10%' }}>{transaction.source}</td>
                 <td className="py-2 px-4 border-b border-r border-gray-200" style={{ width: '40%' }}>{transaction.remark}</td>

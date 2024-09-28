@@ -38,12 +38,6 @@ const Dashboard = () => {
 
   return (
     <div className="flex flex-col w-full">
-      <button
-        onClick={openModal}
-        className="absolute right-40 bg-blue-500 text-white px-6 py-2 z-10 rounded-lg hover:bg-blue-600"
-      >
-        Add Transaction
-      </button>
 
       <TransactionModal
         isOpen={isModalOpen}
@@ -52,7 +46,7 @@ const Dashboard = () => {
       />
 
       <div className="relative top-0 flex justify-center items-center flex-1 w-full">
-        <TransactionTable transactionsData={transactionsData} />
+        <TransactionTable transactionsData={transactionsData} openModal={openModal} />
       </div>
     </div>
   );
