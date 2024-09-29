@@ -8,7 +8,7 @@ export const TopNavBar = () => {
     e.preventDefault(); // Prevent page reload
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_IP}/api/auth/logout`, {
+      const response = await fetch(`/api/auth/logout`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
