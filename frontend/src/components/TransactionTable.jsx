@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import TransactionChart from './TransactionCharts.jsx';
 import { PlusCircleIcon, MinusCircleIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
 
-const TransactionTable = ({ transactionsData , openModal }) => {
+const TransactionTable = ({ transactionsData , openModal , handleDelete }) => {
   // State to store filter values
   const [typeFilter, setTypeFilter] = useState('');
   const [sourceFilter, setSourceFilter] = useState('');

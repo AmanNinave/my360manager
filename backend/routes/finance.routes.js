@@ -8,9 +8,9 @@ financeRouter.post("/addtransaction" , protectRoute , addTransaction );
 
 financeRouter.get("/gettransactions" , protectRoute , getTransactions );
 
-financeRouter.put('/edittransactions/:id', editTransaction); // Edit transaction
+financeRouter.put('/edittransaction/:id', editTransaction); // Edit transaction
 
-financeRouter.delete('/deletetransactions/:id', deleteTransaction); // Delete transaction
+financeRouter.delete('/deletetransaction/:id', deleteTransaction); // Delete transaction
 
 
 export default financeRouter;

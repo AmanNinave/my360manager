@@ -36,6 +36,32 @@ const Dashboard = () => {
     }
   };
 
+  const handleDelete = async (transactionId) => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_IP}/api/finance/deletetransaction/${transactionId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete the transaction");
+      }
+
+      // Filter out the deleted transaction from the state
+      setTransactionsData((prevTransactions) =>
+        prevTransactions.filter(transaction => transaction._id !== transactionId)
+      );
+
+      console.log("Transaction deleted successfully");
+    } catch (error) {
+      console.error("Error deleting transaction:", error);
+    }
+  };
+
+
   return (
     <div className="flex flex-col w-full">
 
@@ -47,7 +73,7 @@ const Dashboard = () => {
       />
 
       <div className="relative top-0 flex justify-center items-center flex-1 w-full">
-        <TransactionTable transactionsData={transactionsData} openModal={openModal} />
+        <TransactionTable transactionsData={transactionsData} openModal={openModal} handleDelete={handleDelete} />
       </div>
     </div>
   );
