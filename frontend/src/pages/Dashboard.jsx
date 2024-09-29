@@ -16,7 +16,7 @@ const Dashboard = () => {
   const getData = async () => {
 
     try {
-      const response = await fetch(`/api/finance/gettransactions`, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_IP}/api/finance/gettransactions`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

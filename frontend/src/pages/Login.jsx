@@ -10,7 +10,7 @@ const Login = () => {
     e.preventDefault(); // Prevent page reload
 
     try {
-      const response = await fetch(`/api/auth/login`, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_IP}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

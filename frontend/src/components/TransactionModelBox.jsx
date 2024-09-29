@@ -32,7 +32,7 @@ const TransactionModal = ({ isOpen, onClose, setTransactionsData }) => {
     const finalData = { ...formData, source: finalSource };
     
     try {
-      const response = await fetch(`/api/finance/addtransaction`, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_IP}/api/finance/addtransaction`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
