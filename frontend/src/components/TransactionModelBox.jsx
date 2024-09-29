@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { incomeSources, expenditureSources } from '../constants/finance.constants.js';
 
-const TransactionModal = ({ isOpen, onClose, setTransactionsData }) => {
+const TransactionModal = ({ isOpen, onClose, transactionsData, setTransactionsData }) => {
   const [formData, setFormData] = useState({
     type: 'Expenditure', 
     source: '',
@@ -53,7 +53,7 @@ const TransactionModal = ({ isOpen, onClose, setTransactionsData }) => {
       if (response.ok) {
         const result = await response.json();
         console.log(result);
-        setTransactionsData(result)
+        setTransactionsData([...transactionsData , result.transaction]);
       } else {
         console.error('Error submitting transaction', response.status);
       }

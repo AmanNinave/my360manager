@@ -42,6 +42,7 @@ const Dashboard = () => {
       <TransactionModal
         isOpen={isModalOpen}
         onClose={closeModal}
+        transactionsData={transactionsData}
         setTransactionsData={setTransactionsData}
       />
 
