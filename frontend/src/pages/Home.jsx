@@ -5,7 +5,7 @@ import Dashboard from './Dashboard.jsx'
 
 const Home = () => {
     return (
-        <div className="flex h-screen">
+      <div className="flex h-[100vh]">
         {/* Sidebar */}
         <Sidebar />
     
@@ -15,7 +15,7 @@ const Home = () => {
           <TopNavBar />
     
           {/* Main content */}
-          <div className="p-6 bg-gray-100 max-h-[90vh]  flex-1 overflow-y-auto">
+          <div className="p-6 bg-gray-100 max-h-[100vh]  flex-1 overflow-y-auto">
             <Dashboard/>
           </div>
         </div>

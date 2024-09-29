@@ -152,7 +152,7 @@ const TransactionTable = ({ transactionsData , openModal }) => {
       <TransactionChart transactionsData={filteredTransactions} />
 
       {/* Transactions Table */}
-      <div className={`h-[85vh] overflow-y-auto`}>
+      <div className={`max-h-[85vh] overflow-y-auto`}>
         <table className="w-full bg-white border border-gray-300">
           <thead className="sticky top-0 bg-blue-500">
             <tr className="text-white">

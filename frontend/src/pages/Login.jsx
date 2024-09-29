@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const Login = () => {
+const Login = ({setIsAuthenticated}) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ const Login = () => {
       const data = await response.json();
       // Assume the response contains a token or user data
       console.log(data); // Log the response for debugging
-
+      setIsAuthenticated(true);
       navigate('/'); // Navigate to the home page on successful login
     } catch (error) {
       console.error('Error:', error);
