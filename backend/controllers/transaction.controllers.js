@@ -43,7 +43,10 @@ export const getTransactions = async (req , res )=> {
 
         const transactionsHistory = await TransactionHistory.findOne({ userId }).populate("transactions");
 
-        res.status(200).json(transactionsHistory.transactions );
+        const transactions = [];
+        if(transactionsHistory) transactions = transactionsHistory.populate('transactions');
+        
+        res.status(200).json(transactions );
 
     }catch (error){
         console.log("Error in getMessages controller " , error.message );

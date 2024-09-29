@@ -30,7 +30,8 @@ const TransactionModal = ({ isOpen, onClose, setTransactionsData }) => {
     const finalSource = formData.source === 'Custom' ? formData.customSource : formData.source;
 
     const finalData = { ...formData, source: finalSource };
-    
+ 
+    onClose(); 
     try {
       const response = await fetch(`${import.meta.env.VITE_BACKEND_IP}/api/finance/addtransaction`, {
         method: 'POST',
@@ -53,7 +54,6 @@ const TransactionModal = ({ isOpen, onClose, setTransactionsData }) => {
         const result = await response.json();
         console.log(result);
         setTransactionsData(result)
-        onClose(); // Close the modal on successful submission
       } else {
         console.error('Error submitting transaction', response.status);
       }
