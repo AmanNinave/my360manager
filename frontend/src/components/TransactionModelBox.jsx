@@ -157,7 +157,7 @@ const TransactionModal = ({ isOpen, onClose, setTransactionsData }) => {
               <input
                 type="number"
                 name="credit"
-                value={formData.credit}
+                value={formData.credit ? formData.credit : ''}
                 onChange={handleChange}
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter credit amount"
@@ -171,7 +171,7 @@ const TransactionModal = ({ isOpen, onClose, setTransactionsData }) => {
               <input
                 type="number"
                 name="debit"
-                value={formData.debit}
+                value={formData.debit ? formData.debit : ''}
                 onChange={handleChange}
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter debit amount"
