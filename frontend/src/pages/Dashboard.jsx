@@ -1,27 +1,55 @@
 import React, { useEffect, useReducer, useRef, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-
+import TransactionModal from '../components/TransactionModelBox';
+import TransactionTable from '../components/TransactionTable';
 const Dashboard = () => {
-  console.log('render');
-  const val = useRef(20);
+  const [isModalOpen, setModalOpen] = useState(false);
 
+  const openModal = () => setModalOpen(true);
+  const closeModal = () => setModalOpen(false);
+
+  const [transactionsData , setTransactionsData] = useState([]);
+  
   useEffect(()=>{
-    console.log('useEffect')
-  }, [val.current])
+    getData();
+  },[]);
 
-  const handleClick = () => {
-    console.log("click function")
-    console.log(val.current)
-    val.current = Math.floor( Math.random()*10 ) ;
-    console.log(val.current)
-  }
+  const getData = async () => {
+
+    try {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_IP}/api/finance/gettransactions`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        setTransactionsData(result);
+       
+      } else {
+        console.error('Error submitting transaction', response.status);
+      }
+    } catch (error) {
+      console.error('Error during submission:', error);
+    }
+  };
 
   return (
-    <>
-      <button onClick={handleClick}>click Me</button>
-      <h1>hi</h1>
-    </>
-  )
+    <div className="flex flex-col w-full">
+
+      <TransactionModal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        setTransactionsData={setTransactionsData}
+      />
+
+      <div className="relative top-0 flex justify-center items-center flex-1 w-full">
+        <TransactionTable transactionsData={transactionsData} openModal={openModal} />
+      </div>
+    </div>
+  );
 }
 
 export default Dashboard
