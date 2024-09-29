@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './App.css'
-import AppRouter from './routes/Router'
+import AppRouter from './routes/Router.jsx'
 
 function App() {
   const [isAuthenticated , setIsAuthenticated ] = useState(true)

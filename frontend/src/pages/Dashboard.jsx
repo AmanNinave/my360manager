@@ -1,6 +1,6 @@
 import React, { useEffect, useReducer, useRef, useState } from 'react'
-import TransactionModal from '../components/TransactionModelBox';
-import TransactionTable from '../components/TransactionTable';
+import TransactionModal from '../components/TransactionModelBox.jsx';
+import TransactionTable from '../components/TransactionTable.jsx';
 const Dashboard = () => {
   const [isModalOpen, setModalOpen] = useState(false);
 

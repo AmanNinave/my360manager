@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
-import IncomeExpenditureChart from './IncomeExpenditureChart';
-import IncomeExpenditureBySourceChart from './IncomeExpenditureBySourceChart';
+import IncomeExpenditureChart from './IncomeExpenditureChart.jsx';
+import IncomeExpenditureBySourceChart from './IncomeExpenditureBySourceChart.jsx';
 
 const TransactionChart = ({ transactionsData }) => {
   return (

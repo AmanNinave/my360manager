@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import TransactionChart from './TransactionCharts';
+import TransactionChart from './TransactionCharts.jsx';
 
 const TransactionTable = ({ transactionsData , openModal }) => {
   // State to store filter values
