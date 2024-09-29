@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import TransactionChart from './TransactionCharts.jsx';
+import { PlusCircleIcon, MinusCircleIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
 
 const TransactionTable = ({ transactionsData , openModal }) => {
   // State to store filter values
@@ -151,7 +152,6 @@ const TransactionTable = ({ transactionsData , openModal }) => {
       {/* Transactions Chart */}
       <TransactionChart transactionsData={filteredTransactions} />
 
-      {/* Transactions Table */}
       <div className={`max-h-[85vh] overflow-y-auto`}>
         <table className="w-full bg-white border border-gray-300">
           <thead className="sticky top-0 bg-blue-500">
@@ -160,24 +160,56 @@ const TransactionTable = ({ transactionsData , openModal }) => {
               <th className="py-3 px-4 border-b border-r border-gray-200" style={{ width: '10%' }}>Type</th>
               <th className="py-3 px-4 border-b border-r border-gray-200" style={{ width: '10%' }}>Source</th>
               <th className="py-3 px-4 border-b border-r border-gray-200" style={{ width: '40%' }}>Remark</th>
-              <th className="py-3 px-4 border-b border-r border-gray-200 text-right" style={{ width: '10%' }}>Debit</th>
-              <th className="py-3 px-4 border-b text-right" style={{ width: '10%' }}>Credit</th>
+              <th className="py-3 px-4 border-b border-r border-gray-200" style={{ width: '15%' }}>Amount</th>
+              <th className="py-3 px-4 border-b " style={{ width: '7%' }}>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {filteredTransactions.map((transaction, index) => (
-              <tr key={index} className={transaction.type === 'Income' ? 'bg-green-100' : 'bg-red-100'}>
-                <td className="py-2 px-4 border-b border-r border-gray-200" style={{ width: '18%' }}>{new Date(transaction.updatedAt).toLocaleString()}</td>
-                <td className="py-2 px-4 border-b border-r border-gray-200" style={{ width: '10%' }}>{transaction.type}</td>
-                <td className="py-2 px-4 border-b border-r border-gray-200" style={{ width: '10%' }}>{transaction.source}</td>
-                <td className="py-2 px-4 border-b border-r border-gray-200" style={{ width: '40%' }}>{transaction.remark}</td>
-                <td className="py-2 px-4 border-b border-r border-gray-200 text-right" style={{ width: '10%' }}>{transaction.debit.toFixed(2)}</td>
-                <td className="py-2 px-4 border-b text-right" style={{ width: '10%' }}>{transaction.credit.toFixed(2)}</td>
-              </tr>
-            ))}
+            {filteredTransactions.map((transaction, index) => {
+              // Calculate amount and ignore zero values
+              const amount = transaction.type === 'Income' ? transaction.credit : transaction.debit;
+              if (amount === 0) return null; // Ignore rows with zero amounts
+
+              return (
+                <tr key={index} className={transaction.type === 'Income' ? 'bg-green-100' : 'bg-red-100'}>
+                  <td className="py-2 px-4 border-b border-r border-gray-200" style={{ width: '18%' }}>
+                    {new Date(transaction.updatedAt).toLocaleString()}
+                  </td>
+                  <td className="py-2 px-4 border-b border-r border-gray-200" style={{ width: '10%' }}>
+                    {transaction.type}
+                  </td>
+                  <td className="py-2 px-4 border-b border-r border-gray-200" style={{ width: '10%' }}>
+                    {transaction.source}
+                  </td>
+                  <td className="py-2 px-4 border-b border-r border-gray-200" style={{ width: '40%' }}>
+                    {transaction.remark}
+                  </td>
+                  <td className="py-2 px-4 border-b border-r border-gray-200 text-right" style={{ width: '15%' }}>
+                    {amount.toFixed(1)} 
+                    {transaction.type === 'Income' ? (
+                      <PlusCircleIcon className="h-5 w-5 text-green-600 inline-block ml-2" />
+                    ) : (
+                      <MinusCircleIcon className="h-5 w-5 text-red-600 inline-block ml-2" />
+                    )}
+                  </td>
+                  <td className="py-2 px-4 pl-6 border-b " style={{ width: '7%' }}>
+                    <button onClick={() => handleEdit(transaction)} className="text-blue-500 hover:text-blue-700">
+                      <PencilIcon className="h-5 w-5 inline" />
+                    </button>
+                    <button onClick={() => handleDelete(transaction._id)} className="text-red-500 hover:text-red-700 ml-2">
+                      <TrashIcon className="h-5 w-5 inline" />
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
+
+
+
+
     </div>
   );
 };
