@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { incomeSources, expenditureSources } from '../constants/finance.constants';
+import { incomeSources, expenditureSources } from '../constants/finance.constants.js';
 
 const TransactionModal = ({ isOpen, onClose, setTransactionsData }) => {
   const [formData, setFormData] = useState({
