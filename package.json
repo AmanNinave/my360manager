@@ -2,10 +2,10 @@
   "name": "my360manager",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
-    "server": "nodemon backend/server.js",
-    "start" :"node backend/server.js",
+    "server": "nodemon backend/index.js",
+    "start" :"node backend/index.js",
     "build" : "npm install && npm install --prefix frontend && npm run build --prefix frontend"
   },
   "type": "module",
