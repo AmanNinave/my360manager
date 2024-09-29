@@ -1,55 +1,41 @@
 import Transaction from "../models/transaction.model.js";
 import TransactionHistory from "../models/transactionHistory.model.js";
 
-export const addTransaction = async (req , res )=>{
-   try {
-    const { type , source , remark , debit , credit } = req.body;
-    const userId = req.user._id;     // this we are adding from protected Route
+export const addTransaction = async (req, res) => {
+    try {
+        const { type, source, remark, debit, credit } = req.body;
+        const userId = req.user._id; // Get userId from protected route
 
-    let transactionHistory  = await TransactionHistory.findOne({ userId })
+        const newTransaction = new Transaction({
+            userId,
+            type,
+            source,
+            remark,
+            debit,
+            credit,
+        });
 
-    if(!transactionHistory){
-        transactionHistory = await TransactionHistory.create({ userId })
+        await newTransaction.save(); // save the new transaction
+
+        res.status(200).json({ message: "Transaction added successfully", transaction: newTransaction });
+    } catch (error) {
+        console.log("Error in addTransaction controller:", error.message);
+        res.status(500).json({ error: "Internal server error" });
     }
+};
 
-    const newTransaction = new Transaction({
-        userId,
-        type,
-        source,
-        remark,
-        debit,
-        credit,
-    })
 
-    if(newTransaction){
-        transactionHistory.transactions.push(newTransaction._id);
-    }
-
-    await Promise.all([transactionHistory.save() , newTransaction.save()]);  // This will run in parallel
-
-    const transactionsHistory = await TransactionHistory.findOne({ userId }).populate("transactions");
-
-    res.status(200).json(transactionsHistory.transactions );
-    
-   } catch (error) {
-    console.log("Error from sendMessage controller " + error.message );
-    res.status(500).json({ error : "Internal server error" });
-   }
-}
-
-export const getTransactions = async (req , res )=> {
+export const getTransactions = async (req, res) => {
     try {
         const userId = req.user._id;
 
-        const transactionsHistory = await TransactionHistory.findOne({ userId }).populate("transactions");
+        // Fetch all transactions directly for the user
+        const transactions = await Transaction.find({ userId });
 
-        const transactions = [];
-        if(transactionsHistory) transactions = transactionsHistory.populate('transactions');
-        
-        res.status(200).json(transactions );
-
-    }catch (error){
-        console.log("Error in getMessages controller " , error.message );
-        res.send(500).json({error : "Internal server error"});
+        res.status(200).json(transactions);
+    } catch (error) {
+        console.log("Error in getTransactions controller:", error.message);
+        res.status(500).json({ error: "Internal server error" });
     }
-}
+};
+

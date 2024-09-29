@@ -1,11 +1,13 @@
-export const incomeSources = ['Salary', 'Stocks', 'Business', 'Other', 'Interest', 'Custom'];
+export const incomeSources = ['Salary', 'Shop' ,'Stocks', 'Business', 'Interest', 'Other', 'Custom'];
 export const expenditureSources = [
+  'Grocery',
+  'Food', 
   'Health', 
   'Travel', 
   'Investment', 
-  'Food', 
   'Construction', 
   'Medicine', 
-  'Loan Payment', 
+  'Loan Payment',
+  'Credit Card', 
   'Custom',
 ];
