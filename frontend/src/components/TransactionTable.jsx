@@ -61,10 +61,10 @@ const TransactionTable = ({
 
     const matchesStartDate =
       startDateFilter === "" ||
-      new Date(transaction.updatedAt) >= new Date(startDateFilter);
+      new Date(transaction.createdAt) >= new Date(startDateFilter);
     const matchesEndDate =
       endDateFilter === "" ||
-      new Date(transaction.updatedAt) <= new Date(endDateFilter);
+      new Date(transaction.createdAt) <= new Date(endDateFilter);
 
     return (
       matchesType &&
@@ -188,14 +188,14 @@ const TransactionTable = ({
                 </label>
                 <div className="flex space-x-2">
                   <input
-                    type="date"
-                    className="border rounded-md p-2 w-1/2 focus:ring-blue-500 focus:border-blue-500"
+                    type="datetime-local"
+                    className="border rounded-md p-2 w-1/2 focus:ring-blue-500 focus:border-blue-500 text-xs"
                     value={startDateFilter}
                     onChange={(e) => setStartDateFilter(e.target.value)}
                   />
                   <input
-                    type="date"
-                    className="border rounded-md p-2 w-1/2 focus:ring-blue-500 focus:border-blue-500"
+                    type="datetime-local"
+                    className="border rounded-md p-2 w-1/2 focus:ring-blue-500 focus:border-blue-500 text-xs"
                     value={endDateFilter}
                     onChange={(e) => setEndDateFilter(e.target.value)}
                   />
@@ -316,7 +316,7 @@ const TransactionTable = ({
                       className="py-2 px-4 border-b border-r border-gray-200"
                       style={{ width: "18%" }}
                     >
-                      {new Date(transaction.updatedAt).toLocaleString()}
+                      {new Date(transaction.createdAt).toLocaleString()}
                     </td>
                     <td
                       className="py-2 px-4 border-b border-r border-gray-200"
