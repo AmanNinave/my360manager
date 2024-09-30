@@ -1,16 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { incomeSources, expenditureSources } from '../constants/finance.constants.js';
 
-const TransactionModal = ({ isOpen, onClose, transactionsData, setTransactionsData }) => {
-  const [formData, setFormData] = useState({
-    type: 'Expenditure', 
-    source: '',
-    customSource: '', // Field to capture custom source input
-    remark: '',
-    debit: 0,
-    credit: 0,
-    mode: 'Online', 
-  });
+const TransactionModal = ({modalFormData, isOpen, onClose, transactionsData, setTransactionsData }) => {
+  const [formData , setFormData] = useState(modalFormData);
+
+  useEffect(()=>{
+    setFormData(modalFormData);
+  },[modalFormData])
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,28 +30,32 @@ const TransactionModal = ({ isOpen, onClose, transactionsData, setTransactionsDa
  
     onClose(); 
     try {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_IP}/api/finance/addtransaction`, {
-        method: 'POST',
+      let url = `${import.meta.env.VITE_BACKEND_IP}/api/finance/addtransaction`
+      let method = 'POST';
+      if( formData.isEdit ){
+        url = `${import.meta.env.VITE_BACKEND_IP}/api/finance/edittransaction/${formData._id}`
+        method = "PUT"
+      }
+      const response = await fetch( url , {
+        method: method,
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(finalData),
         credentials: 'include',
       });
-      setFormData({
-        type: 'Expenditure', 
-        source: '',
-        customSource: '', 
-        remark: '',
-        debit: 0,
-        credit: 0,
-        mode: 'Online',
-      });
 
       if (response.ok) {
         const result = await response.json();
-        console.log(result);
-        setTransactionsData([...transactionsData , result.transaction]);
+        if(formData.isEdit){
+          setTransactionsData((prevTransactions) => (
+            prevTransactions.map(transaction => (
+              transaction._id === result.transaction._id ? result.transaction : transaction 
+            ))
+          ));
+        }else{
+          setTransactionsData([...transactionsData , result.transaction]);
+        }
       } else {
         console.error('Error submitting transaction', response.status);
       }

@@ -1,11 +1,6 @@
 import React, { useEffect, useReducer, useRef, useState } from 'react'
-import TransactionModal from '../components/TransactionModelBox.jsx';
 import TransactionTable from '../components/TransactionTable.jsx';
 const Dashboard = () => {
-  const [isModalOpen, setModalOpen] = useState(false);
-
-  const openModal = () => setModalOpen(true);
-  const closeModal = () => setModalOpen(false);
 
   const [transactionsData , setTransactionsData] = useState([]);
   
@@ -65,15 +60,12 @@ const Dashboard = () => {
   return (
     <div className="flex flex-col w-full">
 
-      <TransactionModal
-        isOpen={isModalOpen}
-        onClose={closeModal}
-        transactionsData={transactionsData}
-        setTransactionsData={setTransactionsData}
-      />
-
       <div className="relative top-0 flex justify-center items-center flex-1 w-full">
-        <TransactionTable transactionsData={transactionsData} openModal={openModal} handleDelete={handleDelete} />
+        <TransactionTable 
+          transactionsData={transactionsData} 
+          handleDelete={handleDelete} 
+          setTransactionsData={setTransactionsData}
+        />
       </div>
     </div>
   );
