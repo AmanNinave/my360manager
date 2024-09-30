@@ -1,12 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { incomeSources, expenditureSources } from '../constants/finance.constants.js';
+import React, { useEffect, useState } from "react";
+import {
+  incomeSources,
+  expenditureSources,
+} from "../constants/finance.constants.js";
 
-const TransactionModal = ({modalFormData, isOpen, onClose, transactionsData, setTransactionsData }) => {
-  const [formData , setFormData] = useState(modalFormData);
+const TransactionModal = ({
+  modalFormData,
+  isOpen,
+  onClose,
+  transactionsData,
+  setTransactionsData,
+}) => {
+  const [formData, setFormData] = useState(modalFormData);
 
-  useEffect(()=>{
+  useEffect(() => {
     setFormData(modalFormData);
-  },[modalFormData])
+  }, [modalFormData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -17,50 +26,55 @@ const TransactionModal = ({modalFormData, isOpen, onClose, transactionsData, set
     e.preventDefault();
 
     // Adjust debit/credit values based on the type of transaction
-    if (formData.type === 'Income') {
+    if (formData.type === "Income") {
       formData.debit = 0; // Clear debit for Income
     } else {
       formData.credit = 0; // Clear credit for Expenditure
     }
 
     // Use custom source if 'Custom' is selected
-    const finalSource = formData.source === 'Custom' ? formData.customSource : formData.source;
+    const finalSource =
+      formData.source === "Custom" ? formData.customSource : formData.source;
 
     const finalData = { ...formData, source: finalSource };
- 
-    onClose(); 
+
+    onClose();
     try {
-      let url = `${import.meta.env.VITE_BACKEND_IP}/api/finance/addtransaction`
-      let method = 'POST';
-      if( formData.isEdit ){
-        url = `${import.meta.env.VITE_BACKEND_IP}/api/finance/edittransaction/${formData._id}`
-        method = "PUT"
+      let url = `${import.meta.env.VITE_BACKEND_IP}/api/finance/addtransaction`;
+      let method = "POST";
+      if (formData.isEdit) {
+        url = `${import.meta.env.VITE_BACKEND_IP}/api/finance/edittransaction/${
+          formData._id
+        }`;
+        method = "PUT";
       }
-      const response = await fetch( url , {
+      const response = await fetch(url, {
         method: method,
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(finalData),
-        credentials: 'include',
+        credentials: "include",
       });
 
       if (response.ok) {
         const result = await response.json();
-        if(formData.isEdit){
-          setTransactionsData((prevTransactions) => (
-            prevTransactions.map(transaction => (
-              transaction._id === result.transaction._id ? result.transaction : transaction 
-            ))
-          ));
-        }else{
-          setTransactionsData([...transactionsData , result.transaction]);
+        if (formData.isEdit) {
+          setTransactionsData((prevTransactions) =>
+            prevTransactions.map((transaction) =>
+              transaction._id === result.transaction._id
+                ? result.transaction
+                : transaction
+            )
+          );
+        } else {
+          setTransactionsData([...transactionsData, result.transaction]);
         }
       } else {
-        console.error('Error submitting transaction', response.status);
+        console.error("Error submitting transaction", response.status);
       }
     } catch (error) {
-      console.error('Error during submission:', error);
+      console.error("Error during submission:", error);
     }
   };
 
@@ -124,7 +138,7 @@ const TransactionModal = ({modalFormData, isOpen, onClose, transactionsData, set
               required
             >
               <option value="">Select Source</option>
-              {formData.type === 'Income'
+              {formData.type === "Income"
                 ? incomeSources.map((source) => (
                     <option key={source} value={source}>
                       {source}
@@ -139,7 +153,7 @@ const TransactionModal = ({modalFormData, isOpen, onClose, transactionsData, set
           </div>
 
           {/* Custom Source Input (conditionally rendered) */}
-          {formData.source === 'Custom' && (
+          {formData.source === "Custom" && (
             <div className="mb-4">
               <label className="block text-gray-700">Custom Source</label>
               <input
@@ -169,17 +183,17 @@ const TransactionModal = ({modalFormData, isOpen, onClose, transactionsData, set
           </div>
 
           {/* Conditional Debit/Credit Field */}
-          {formData.type === 'Income' ? (
+          {formData.type === "Income" ? (
             <div className="mb-4">
               <label className="block text-gray-700">Credit</label>
               <input
                 type="number"
                 name="credit"
-                value={formData.credit ? formData.credit : ''}
+                value={formData.credit ? formData.credit : ""}
                 onChange={handleChange}
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter credit amount"
-                required={formData.type === 'Income'}
+                required={formData.type === "Income"}
                 min="0"
               />
             </div>
@@ -189,11 +203,11 @@ const TransactionModal = ({modalFormData, isOpen, onClose, transactionsData, set
               <input
                 type="number"
                 name="debit"
-                value={formData.debit ? formData.debit : ''}
+                value={formData.debit ? formData.debit : ""}
                 onChange={handleChange}
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter debit amount"
-                required={formData.type === 'Expenditure'}
+                required={formData.type === "Expenditure"}
                 min="0"
               />
             </div>

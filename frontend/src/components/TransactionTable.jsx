@@ -1,92 +1,121 @@
-import React, { useState } from 'react';
-import TransactionChart from './TransactionCharts.jsx';
-import { PlusCircleIcon, MinusCircleIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
-import TransactionModal from './TransactionModelBox.jsx';
+import React, { useState } from "react";
+import TransactionChart from "./TransactionCharts.jsx";
+import {
+  PlusCircleIcon,
+  MinusCircleIcon,
+  PencilIcon,
+  TrashIcon,
+} from "@heroicons/react/24/outline";
+import TransactionModal from "./TransactionModelBox.jsx";
 
-const TransactionTable = ({ transactionsData , handleDelete ,setTransactionsData }) => {
-
+const TransactionTable = ({
+  transactionsData,
+  handleDelete,
+  setTransactionsData,
+}) => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [modalFormData, setModalFormData] = useState({
-    type: 'Expenditure', 
-    source: '',
-    customSource: '', // Field to capture custom source input
-    remark: '',
+    type: "Expenditure",
+    source: "",
+    customSource: "", // Field to capture custom source input
+    remark: "",
     debit: 0,
     credit: 0,
-    mode: 'Online', 
-    isEdit : false
+    mode: "Online",
+    isEdit: false,
   });
 
   // State to store filter values
-  const [typeFilter, setTypeFilter] = useState('');
-  const [modeFilter, setModeFilter] = useState('');
-  const [sourceFilter, setSourceFilter] = useState('');
-  const [minDebitFilter, setMinDebitFilter] = useState('');
-  const [maxDebitFilter, setMaxDebitFilter] = useState('');
-  const [minCreditFilter, setMinCreditFilter] = useState('');
-  const [maxCreditFilter, setMaxCreditFilter] = useState('');
-  const [startDateFilter, setStartDateFilter] = useState('');
-  const [endDateFilter, setEndDateFilter] = useState('');
+  const [typeFilter, setTypeFilter] = useState("");
+  const [modeFilter, setModeFilter] = useState("");
+  const [sourceFilter, setSourceFilter] = useState("");
+  const [minDebitFilter, setMinDebitFilter] = useState("");
+  const [maxDebitFilter, setMaxDebitFilter] = useState("");
+  const [minCreditFilter, setMinCreditFilter] = useState("");
+  const [maxCreditFilter, setMaxCreditFilter] = useState("");
+  const [startDateFilter, setStartDateFilter] = useState("");
+  const [endDateFilter, setEndDateFilter] = useState("");
 
   // State to toggle filter visibility
   const [showFilters, setShowFilters] = useState(false);
 
   // Function to filter transactions based on filter values
   const filteredTransactions = transactionsData.filter((transaction) => {
-    const matchesType = typeFilter === '' || transaction.type === typeFilter;
-    const matchesMode = modeFilter === '' || transaction.mode === modeFilter;
-    const matchesSource = sourceFilter === '' || transaction.source.toLowerCase().includes(sourceFilter.toLowerCase());
+    const matchesType = typeFilter === "" || transaction.type === typeFilter;
+    const matchesMode = modeFilter === "" || transaction.mode === modeFilter;
+    const matchesSource =
+      sourceFilter === "" ||
+      transaction.source.toLowerCase().includes(sourceFilter.toLowerCase());
 
-    const matchesMinDebit = minDebitFilter === '' || transaction.debit >= parseFloat(minDebitFilter);
-    const matchesMaxDebit = maxDebitFilter === '' || transaction.debit <= parseFloat(maxDebitFilter);
+    const matchesMinDebit =
+      minDebitFilter === "" || transaction.debit >= parseFloat(minDebitFilter);
+    const matchesMaxDebit =
+      maxDebitFilter === "" || transaction.debit <= parseFloat(maxDebitFilter);
 
-    const matchesMinCredit = minCreditFilter === '' || transaction.credit >= parseFloat(minCreditFilter);
-    const matchesMaxCredit = maxCreditFilter === '' || transaction.credit <= parseFloat(maxCreditFilter);
+    const matchesMinCredit =
+      minCreditFilter === "" ||
+      transaction.credit >= parseFloat(minCreditFilter);
+    const matchesMaxCredit =
+      maxCreditFilter === "" ||
+      transaction.credit <= parseFloat(maxCreditFilter);
 
-    const matchesStartDate = startDateFilter === '' || new Date(transaction.updatedAt) >= new Date(startDateFilter);
-    const matchesEndDate = endDateFilter === '' || new Date(transaction.updatedAt) <= new Date(endDateFilter);
+    const matchesStartDate =
+      startDateFilter === "" ||
+      new Date(transaction.updatedAt) >= new Date(startDateFilter);
+    const matchesEndDate =
+      endDateFilter === "" ||
+      new Date(transaction.updatedAt) <= new Date(endDateFilter);
 
-    return matchesType && matchesMode && matchesSource && matchesMinDebit && matchesMaxDebit && matchesMinCredit && matchesMaxCredit && matchesStartDate && matchesEndDate;
+    return (
+      matchesType &&
+      matchesMode &&
+      matchesSource &&
+      matchesMinDebit &&
+      matchesMaxDebit &&
+      matchesMinCredit &&
+      matchesMaxCredit &&
+      matchesStartDate &&
+      matchesEndDate
+    );
   });
-
 
   const openModal = () => {
     setModalOpen(true);
-  }
+  };
 
   const closeModal = () => {
     setModalOpen(false);
     setModalFormData({
-      type: 'Expenditure', 
-      source: '',
-      customSource: '', // Field to capture custom source input
-      remark: '',
+      type: "Expenditure",
+      source: "",
+      customSource: "", // Field to capture custom source input
+      remark: "",
       debit: 0,
       credit: 0,
-      mode: 'Online', 
-      isEdit : false
-    })
-  }
+      mode: "Online",
+      isEdit: false,
+    });
+  };
 
   const handleEdit = (transactionToBeEdited) => {
-    setModalFormData({...transactionToBeEdited , isEdit : true })
+    setModalFormData({ ...transactionToBeEdited, isEdit: true });
     openModal();
-  }
+  };
 
   return (
     <>
       <TransactionModal
-          modalFormData={modalFormData}
-          isOpen={isModalOpen}
-          onClose={closeModal}
-          transactionsData={transactionsData}
-          setTransactionsData={setTransactionsData}
+        modalFormData={modalFormData}
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        transactionsData={transactionsData}
+        setTransactionsData={setTransactionsData}
       />
       <div className="absolute top-0 overflow-hidden bg-gray-100 w-full">
         {/* Toggle Button for Filters */}
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-semibold">Transaction Table</h2>
-          <div className='flex gap-x-5'>
+          <div className="flex gap-x-5">
             <button
               onClick={openModal}
               className=" bg-blue-500 text-white px-6 py-2 z-10 rounded-lg hover:bg-blue-600"
@@ -97,7 +126,7 @@ const TransactionTable = ({ transactionsData , handleDelete ,setTransactionsData
               onClick={() => setShowFilters(!showFilters)}
               className="bg-blue-500 text-white px-6 py-2 z-10 rounded-lg hover:bg-blue-600"
             >
-              {showFilters ? 'Hide Filters' : 'Show Filters'}
+              {showFilters ? "Hide Filters" : "Show Filters"}
             </button>
           </div>
         </div>
@@ -109,7 +138,9 @@ const TransactionTable = ({ transactionsData , handleDelete ,setTransactionsData
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {/* Transaction Type Filter */}
               <div>
-                <label className="block text-sm font-medium mb-1">Transaction Type</label>
+                <label className="block text-sm font-medium mb-1">
+                  Transaction Type
+                </label>
                 <select
                   className="border rounded-md p-2 w-full focus:ring-blue-500 focus:border-blue-500"
                   value={typeFilter}
@@ -123,7 +154,9 @@ const TransactionTable = ({ transactionsData , handleDelete ,setTransactionsData
 
               {/* Transaction Mode Filter */}
               <div>
-                <label className="block text-sm font-medium mb-1">Transaction Mode</label>
+                <label className="block text-sm font-medium mb-1">
+                  Transaction Mode
+                </label>
                 <select
                   className="border rounded-md p-2 w-full focus:ring-blue-500 focus:border-blue-500"
                   value={modeFilter}
@@ -150,7 +183,9 @@ const TransactionTable = ({ transactionsData , handleDelete ,setTransactionsData
 
               {/* Date Range Filter */}
               <div>
-                <label className="block text-sm font-medium mb-1">Date Range</label>
+                <label className="block text-sm font-medium mb-1">
+                  Date Range
+                </label>
                 <div className="flex space-x-2">
                   <input
                     type="date"
@@ -169,7 +204,9 @@ const TransactionTable = ({ transactionsData , handleDelete ,setTransactionsData
 
               {/* Debit Filter */}
               <div>
-                <label className="block text-sm font-medium mb-1">Debit Range</label>
+                <label className="block text-sm font-medium mb-1">
+                  Debit Range
+                </label>
                 <div className="flex space-x-2">
                   <input
                     type="number"
@@ -190,7 +227,9 @@ const TransactionTable = ({ transactionsData , handleDelete ,setTransactionsData
 
               {/* Credit Filter */}
               <div>
-                <label className="block text-sm font-medium mb-1">Credit Range</label>
+                <label className="block text-sm font-medium mb-1">
+                  Credit Range
+                </label>
                 <div className="flex space-x-2">
                   <input
                     type="number"
@@ -220,47 +259,110 @@ const TransactionTable = ({ transactionsData , handleDelete ,setTransactionsData
           <table className="w-full bg-white border border-gray-300">
             <thead className="sticky top-0 bg-blue-500">
               <tr className="text-white">
-                <th className="py-3 px-4 border-b border-r border-gray-200" style={{ width: '18%' }}>Date</th>
-                <th className="py-3 px-4 border-b border-r border-gray-200" style={{ width: '10%' }}>Mode</th>
-                <th className="py-3 px-4 border-b border-r border-gray-200" style={{ width: '10%' }}>Source</th>
-                <th className="py-3 px-4 border-b border-r border-gray-200" style={{ width: '40%' }}>Remark</th>
-                <th className="py-3 px-4 border-b border-r border-gray-200" style={{ width: '15%' }}>Amount</th>
-                <th className="py-3 px-4 border-b " style={{ width: '7%' }}>Actions</th>
+                <th
+                  className="py-3 px-4 border-b border-r border-gray-200"
+                  style={{ width: "18%" }}
+                >
+                  Date
+                </th>
+                <th
+                  className="py-3 px-4 border-b border-r border-gray-200"
+                  style={{ width: "10%" }}
+                >
+                  Mode
+                </th>
+                <th
+                  className="py-3 px-4 border-b border-r border-gray-200"
+                  style={{ width: "10%" }}
+                >
+                  Source
+                </th>
+                <th
+                  className="py-3 px-4 border-b border-r border-gray-200"
+                  style={{ width: "40%" }}
+                >
+                  Remark
+                </th>
+                <th
+                  className="py-3 px-4 border-b border-r border-gray-200"
+                  style={{ width: "15%" }}
+                >
+                  Amount
+                </th>
+                <th className="py-3 px-4 border-b " style={{ width: "7%" }}>
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody>
               {filteredTransactions.map((transaction, index) => {
                 // Calculate amount and ignore zero values
-                const amount = transaction.type === 'Income' ? transaction.credit : transaction.debit;
+                const amount =
+                  transaction.type === "Income"
+                    ? transaction.credit
+                    : transaction.debit;
                 if (amount === 0) return null; // Ignore rows with zero amounts
 
                 return (
-                  <tr key={index} className={transaction.type === 'Income' ? 'bg-green-100' : 'bg-red-100'}>
-                    <td className="py-2 px-4 border-b border-r border-gray-200" style={{ width: '18%' }}>
+                  <tr
+                    key={index}
+                    className={
+                      transaction.type === "Income"
+                        ? "bg-green-100"
+                        : "bg-red-100"
+                    }
+                  >
+                    <td
+                      className="py-2 px-4 border-b border-r border-gray-200"
+                      style={{ width: "18%" }}
+                    >
                       {new Date(transaction.updatedAt).toLocaleString()}
                     </td>
-                    <td className="py-2 px-4 border-b border-r border-gray-200" style={{ width: '10%' }}>
-                      {transaction.mode?.length > 8 ? transaction.mode.slice(0, 8) + '...' : transaction.mode}
+                    <td
+                      className="py-2 px-4 border-b border-r border-gray-200"
+                      style={{ width: "10%" }}
+                    >
+                      {transaction.mode?.length > 8
+                        ? transaction.mode.slice(0, 8) + "..."
+                        : transaction.mode}
                     </td>
-                    <td className="py-2 px-4 border-b border-r border-gray-200" style={{ width: '10%' }}>
+                    <td
+                      className="py-2 px-4 border-b border-r border-gray-200"
+                      style={{ width: "10%" }}
+                    >
                       {transaction.source}
                     </td>
-                    <td className="py-2 px-4 border-b border-r border-gray-200" style={{ width: '40%' }}>
+                    <td
+                      className="py-2 px-4 border-b border-r border-gray-200"
+                      style={{ width: "40%" }}
+                    >
                       {transaction.remark}
                     </td>
-                    <td className="py-2 px-4 border-b border-r border-gray-200 text-right" style={{ width: '15%' }}>
-                      {amount.toFixed(1)} 
-                      {transaction.type === 'Income' ? (
+                    <td
+                      className="py-2 px-4 border-b border-r border-gray-200 text-right"
+                      style={{ width: "15%" }}
+                    >
+                      {amount.toFixed(1)}
+                      {transaction.type === "Income" ? (
                         <PlusCircleIcon className="h-5 w-5 text-green-600 inline-block ml-2" />
                       ) : (
                         <MinusCircleIcon className="h-5 w-5 text-red-600 inline-block ml-2" />
                       )}
                     </td>
-                    <td className="py-2 px-4 pl-6 border-b " style={{ width: '7%' }}>
-                      <button onClick={() => handleEdit(transaction)} className="text-blue-500 hover:text-blue-700">
+                    <td
+                      className="py-2 px-4 pl-6 border-b "
+                      style={{ width: "7%" }}
+                    >
+                      <button
+                        onClick={() => handleEdit(transaction)}
+                        className="text-blue-500 hover:text-blue-700"
+                      >
                         <PencilIcon className="h-5 w-5 inline" />
                       </button>
-                      <button onClick={() => handleDelete(transaction._id)} className="text-red-500 hover:text-red-700 ml-2">
+                      <button
+                        onClick={() => handleDelete(transaction._id)}
+                        className="text-red-500 hover:text-red-700 ml-2"
+                      >
                         <TrashIcon className="h-5 w-5 inline" />
                       </button>
                     </td>
@@ -270,10 +372,6 @@ const TransactionTable = ({ transactionsData , handleDelete ,setTransactionsData
             </tbody>
           </table>
         </div>
-
-
-
-
       </div>
     </>
   );
