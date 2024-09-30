@@ -19,6 +19,7 @@ const TransactionTable = ({ transactionsData , handleDelete ,setTransactionsData
 
   // State to store filter values
   const [typeFilter, setTypeFilter] = useState('');
+  const [modeFilter, setModeFilter] = useState('');
   const [sourceFilter, setSourceFilter] = useState('');
   const [minDebitFilter, setMinDebitFilter] = useState('');
   const [maxDebitFilter, setMaxDebitFilter] = useState('');
@@ -33,6 +34,7 @@ const TransactionTable = ({ transactionsData , handleDelete ,setTransactionsData
   // Function to filter transactions based on filter values
   const filteredTransactions = transactionsData.filter((transaction) => {
     const matchesType = typeFilter === '' || transaction.type === typeFilter;
+    const matchesMode = modeFilter === '' || transaction.mode === modeFilter;
     const matchesSource = sourceFilter === '' || transaction.source.toLowerCase().includes(sourceFilter.toLowerCase());
 
     const matchesMinDebit = minDebitFilter === '' || transaction.debit >= parseFloat(minDebitFilter);
@@ -44,7 +46,7 @@ const TransactionTable = ({ transactionsData , handleDelete ,setTransactionsData
     const matchesStartDate = startDateFilter === '' || new Date(transaction.updatedAt) >= new Date(startDateFilter);
     const matchesEndDate = endDateFilter === '' || new Date(transaction.updatedAt) <= new Date(endDateFilter);
 
-    return matchesType && matchesSource && matchesMinDebit && matchesMaxDebit && matchesMinCredit && matchesMaxCredit && matchesStartDate && matchesEndDate;
+    return matchesType && matchesMode && matchesSource && matchesMinDebit && matchesMaxDebit && matchesMinCredit && matchesMaxCredit && matchesStartDate && matchesEndDate;
   });
 
 
@@ -116,6 +118,21 @@ const TransactionTable = ({ transactionsData , handleDelete ,setTransactionsData
                   <option value="">All</option>
                   <option value="Income">Income</option>
                   <option value="Expenditure">Expenditure</option>
+                </select>
+              </div>
+
+              {/* Transaction Mode Filter */}
+              <div>
+                <label className="block text-sm font-medium mb-1">Transaction Mode</label>
+                <select
+                  className="border rounded-md p-2 w-full focus:ring-blue-500 focus:border-blue-500"
+                  value={modeFilter}
+                  onChange={(e) => setModeFilter(e.target.value)}
+                >
+                  <option value="">All</option>
+                  <option value="Online">Online</option>
+                  <option value="Cash">Cash</option>
+                  <option value="Credit Card">Credit Card</option>
                 </select>
               </div>
 
