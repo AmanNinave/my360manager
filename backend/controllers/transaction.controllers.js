@@ -31,7 +31,7 @@ export const getTransactions = async (req, res) => {
         const userId = req.user._id;
 
         // Fetch all transactions directly for the user
-        const transactions = await Transaction.find({ userId });
+        const transactions = await Transaction.find({ userId }).sort({ createdAt: -1 });
 
         res.status(200).json(transactions);
     } catch (error) {

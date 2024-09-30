@@ -4,6 +4,7 @@ export const incomeSources = [
   "Stocks",
   "Business",
   "Interest",
+  "Cashback",
   "Other",
   "Custom",
 ];
@@ -15,6 +16,7 @@ export const expenditureSources = [
   "Investment",
   "Construction",
   "Medicine",
+  "Electricity",
   "Loan Payment",
   "Credit Card",
   "Custom",

@@ -68,7 +68,7 @@ const TransactionModal = ({
             )
           );
         } else {
-          setTransactionsData([...transactionsData, result.transaction]);
+          setTransactionsData([ result.transaction , ...transactionsData ]);
         }
       } else {
         console.error("Error submitting transaction", response.status);
