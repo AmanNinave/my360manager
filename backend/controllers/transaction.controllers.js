@@ -3,7 +3,7 @@ import TransactionHistory from "../models/transactionHistory.model.js";
 
 export const addTransaction = async (req, res) => {
     try {
-        const { type, source, remark, debit, credit } = req.body;
+        const { type, source, remark, debit, credit, mode } = req.body;
         const userId = req.user._id; // Get userId from protected route
 
         const newTransaction = new Transaction({
@@ -13,6 +13,7 @@ export const addTransaction = async (req, res) => {
             remark,
             debit,
             credit,
+            mode
         });
 
         await newTransaction.save(); // save the new transaction
@@ -42,12 +43,12 @@ export const getTransactions = async (req, res) => {
 export const editTransaction = async (req, res) => {
     try {
         const transactionId = req.params.id; // Get the transaction ID from the request parameters
-        const { type, source, remark, debit, credit } = req.body; // Get updated values from the request body
+        const { type, source, remark, debit, credit, mode } = req.body; // Get updated values from the request body
 
         // Find and update the transaction
         const updatedTransaction = await Transaction.findByIdAndUpdate(
             transactionId,
-            { type, source, remark, debit, credit },
+            { type, source, remark, debit, credit, mode },
             { new: true, runValidators: true } // Return the updated document and run validators
         );
 

@@ -11,6 +11,11 @@ const transactionSchema = new mongoose.Schema({
         required: true,
         enum: ["Income", "Expenditure"]
     },
+    mode: {
+        type: String,
+        required: true,
+        enum: ["Online", "Cash", "Credit Card"]
+    },
     source: {
         type: String,
         required: true
