@@ -151,24 +151,31 @@ const IncomeExpenditureChart = ({ transactionsData }) => {
           width: "35%",
           height: "100%",
           position: "relative",
-          marginTop: "5%",
         }}
       >
         <div className="flex flex-col items-center p-4 bg-gray-100 rounded-lg shadow-md">
-          <div className="flex flex-col items-center mb-4">
+          <div className="flex flex-col items-center mb-2">
             <h2 className="text-lg font-semibold text-green-600">
               Total Income
             </h2>
             <p className="text-xl font-bold text-green-800">
-              ₹{totalValue.totalIncome.toFixed(2)}
+              ₹ {totalValue.totalIncome.toFixed(1)}
+            </p>
+          </div>
+          <div className="flex flex-col items-center mb-2">
+            <h2 className="text-lg font-semibold text-red-600">
+              Total Expenditure
+            </h2>
+            <p className="text-xl font-bold text-red-800">
+              ₹ {totalValue.totalExpenditure.toFixed(1)}
             </p>
           </div>
           <div className="flex flex-col items-center">
             <h2 className="text-lg font-semibold text-blue-600">
-              Total Expenditure
+              Balance
             </h2>
             <p className="text-xl font-bold text-blue-800">
-              ₹{totalValue.totalExpenditure.toFixed(2)}
+              ₹ {(totalValue.totalIncome-totalValue.totalExpenditure).toFixed(1)}
             </p>
           </div>
         </div>
