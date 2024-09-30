@@ -4,10 +4,10 @@ import {
   MagnifyingGlassIcon,
   UserCircleIcon,
   ArrowRightOnRectangleIcon,
-} from "@heroicons/react/24/solid"; // Correct v2 imports
+} from "@heroicons/react/24/solid";
 import { Link, useNavigate } from "react-router-dom";
 
-export const TopNavBar = () => {
+const TopNavBar = () => {
   const navigate = useNavigate();
   const handleLogout = async (e) => {
     e.preventDefault(); // Prevent page reload
@@ -74,3 +74,5 @@ export const TopNavBar = () => {
     </div>
   );
 };
+
+export default TopNavBar;

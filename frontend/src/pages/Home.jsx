@@ -1,6 +1,6 @@
 import React from "react";
 import { Sidebar } from "../components/Sidebar.jsx";
-import { TopNavBar } from "../components/TopNavbar.jsx";
+import TopNavBar from "../components/TopNavBar.jsx";
 import Dashboard from "./Dashboard.jsx";
 
 const Home = () => {
