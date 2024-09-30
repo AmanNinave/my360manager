@@ -9,6 +9,7 @@ const TransactionModal = ({ isOpen, onClose, transactionsData, setTransactionsDa
     remark: '',
     debit: 0,
     credit: 0,
+    mode: 'Online', 
   });
 
   const handleChange = (e) => {
@@ -48,7 +49,8 @@ const TransactionModal = ({ isOpen, onClose, transactionsData, setTransactionsDa
         remark: '',
         debit: 0,
         credit: 0,
-      })
+        mode: 'Online',
+      });
 
       if (response.ok) {
         const result = await response.json();
@@ -83,16 +85,32 @@ const TransactionModal = ({ isOpen, onClose, transactionsData, setTransactionsDa
           {/* Transaction Type */}
           <div className="mb-4">
             <label className="block text-gray-700">Transaction Type</label>
-            <select
-              name="type"
-              value={formData.type}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            >
-              <option value="Income">Income</option>
-              <option value="Expenditure">Expenditure</option>
-            </select>
+            <div className="flex space-x-4">
+              <label className="inline-flex items-center">
+                <input
+                  type="radio"
+                  name="type"
+                  value="Income"
+                  checked={formData.type === "Income"}
+                  onChange={handleChange}
+                  className="form-radio h-4 w-4 text-blue-500"
+                  required
+                />
+                <span className="ml-2">Income</span>
+              </label>
+              <label className="inline-flex items-center">
+                <input
+                  type="radio"
+                  name="type"
+                  value="Expenditure"
+                  checked={formData.type === "Expenditure"}
+                  onChange={handleChange}
+                  className="form-radio h-4 w-4 text-blue-500"
+                  required
+                />
+                <span className="ml-2">Expenditure</span>
+              </label>
+            </div>
           </div>
 
           {/* Source Select */}
@@ -180,6 +198,49 @@ const TransactionModal = ({ isOpen, onClose, transactionsData, setTransactionsDa
               />
             </div>
           )}
+
+          {/* Mode Radio Buttons */}
+          <div className="mb-4">
+            <label className="block text-gray-700">Mode</label>
+            <div className="flex space-x-4">
+              <label className="inline-flex items-center">
+                <input
+                  type="radio"
+                  name="mode"
+                  value="Online"
+                  checked={formData.mode === "Online"}
+                  onChange={handleChange}
+                  className="form-radio h-4 w-4 text-blue-500"
+                  required
+                />
+                <span className="ml-2">Online</span>
+              </label>
+              <label className="inline-flex items-center">
+                <input
+                  type="radio"
+                  name="mode"
+                  value="Cash"
+                  checked={formData.mode === "Cash"}
+                  onChange={handleChange}
+                  className="form-radio h-4 w-4 text-blue-500"
+                  required
+                />
+                <span className="ml-2">Cash</span>
+              </label>
+              <label className="inline-flex items-center">
+                <input
+                  type="radio"
+                  name="mode"
+                  value="Credit Card"
+                  checked={formData.mode === "Credit Card"}
+                  onChange={handleChange}
+                  className="form-radio h-4 w-4 text-blue-500"
+                  required
+                />
+                <span className="ml-2">Credit Card</span>
+              </label>
+            </div>
+          </div>
 
           {/* Modal Footer */}
           <div className="flex justify-end">
