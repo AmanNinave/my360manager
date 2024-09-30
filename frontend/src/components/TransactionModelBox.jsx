@@ -1,15 +1,21 @@
-import React, { useState } from 'react';
-import { incomeSources, expenditureSources } from '../constants/finance.constants.js';
+import React, { useEffect, useState } from "react";
+import {
+  incomeSources,
+  expenditureSources,
+} from "../constants/finance.constants.js";
 
-const TransactionModal = ({ isOpen, onClose, transactionsData, setTransactionsData }) => {
-  const [formData, setFormData] = useState({
-    type: 'Expenditure', 
-    source: '',
-    customSource: '', // Field to capture custom source input
-    remark: '',
-    debit: 0,
-    credit: 0,
-  });
+const TransactionModal = ({
+  modalFormData,
+  isOpen,
+  onClose,
+  transactionsData,
+  setTransactionsData,
+}) => {
+  const [formData, setFormData] = useState(modalFormData);
+
+  useEffect(() => {
+    setFormData(modalFormData);
+  }, [modalFormData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -20,45 +26,55 @@ const TransactionModal = ({ isOpen, onClose, transactionsData, setTransactionsDa
     e.preventDefault();
 
     // Adjust debit/credit values based on the type of transaction
-    if (formData.type === 'Income') {
+    if (formData.type === "Income") {
       formData.debit = 0; // Clear debit for Income
     } else {
       formData.credit = 0; // Clear credit for Expenditure
     }
 
     // Use custom source if 'Custom' is selected
-    const finalSource = formData.source === 'Custom' ? formData.customSource : formData.source;
+    const finalSource =
+      formData.source === "Custom" ? formData.customSource : formData.source;
 
     const finalData = { ...formData, source: finalSource };
- 
-    onClose(); 
+
+    onClose();
     try {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_IP}/api/finance/addtransaction`, {
-        method: 'POST',
+      let url = `${import.meta.env.VITE_BACKEND_IP}/api/finance/addtransaction`;
+      let method = "POST";
+      if (formData.isEdit) {
+        url = `${import.meta.env.VITE_BACKEND_IP}/api/finance/edittransaction/${
+          formData._id
+        }`;
+        method = "PUT";
+      }
+      const response = await fetch(url, {
+        method: method,
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(finalData),
-        credentials: 'include',
+        credentials: "include",
       });
-      setFormData({
-        type: 'Expenditure', 
-        source: '',
-        customSource: '', 
-        remark: '',
-        debit: 0,
-        credit: 0,
-      })
 
       if (response.ok) {
         const result = await response.json();
-        console.log(result);
-        setTransactionsData([...transactionsData , result.transaction]);
+        if (formData.isEdit) {
+          setTransactionsData((prevTransactions) =>
+            prevTransactions.map((transaction) =>
+              transaction._id === result.transaction._id
+                ? result.transaction
+                : transaction
+            )
+          );
+        } else {
+          setTransactionsData([ result.transaction , ...transactionsData ]);
+        }
       } else {
-        console.error('Error submitting transaction', response.status);
+        console.error("Error submitting transaction", response.status);
       }
     } catch (error) {
-      console.error('Error during submission:', error);
+      console.error("Error during submission:", error);
     }
   };
 
@@ -83,16 +99,32 @@ const TransactionModal = ({ isOpen, onClose, transactionsData, setTransactionsDa
           {/* Transaction Type */}
           <div className="mb-4">
             <label className="block text-gray-700">Transaction Type</label>
-            <select
-              name="type"
-              value={formData.type}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            >
-              <option value="Income">Income</option>
-              <option value="Expenditure">Expenditure</option>
-            </select>
+            <div className="flex space-x-4">
+              <label className="inline-flex items-center">
+                <input
+                  type="radio"
+                  name="type"
+                  value="Income"
+                  checked={formData.type === "Income"}
+                  onChange={handleChange}
+                  className="form-radio h-4 w-4 text-blue-500"
+                  required
+                />
+                <span className="ml-2">Income</span>
+              </label>
+              <label className="inline-flex items-center">
+                <input
+                  type="radio"
+                  name="type"
+                  value="Expenditure"
+                  checked={formData.type === "Expenditure"}
+                  onChange={handleChange}
+                  className="form-radio h-4 w-4 text-blue-500"
+                  required
+                />
+                <span className="ml-2">Expenditure</span>
+              </label>
+            </div>
           </div>
 
           {/* Source Select */}
@@ -106,7 +138,7 @@ const TransactionModal = ({ isOpen, onClose, transactionsData, setTransactionsDa
               required
             >
               <option value="">Select Source</option>
-              {formData.type === 'Income'
+              {formData.type === "Income"
                 ? incomeSources.map((source) => (
                     <option key={source} value={source}>
                       {source}
@@ -121,7 +153,7 @@ const TransactionModal = ({ isOpen, onClose, transactionsData, setTransactionsDa
           </div>
 
           {/* Custom Source Input (conditionally rendered) */}
-          {formData.source === 'Custom' && (
+          {formData.source === "Custom" && (
             <div className="mb-4">
               <label className="block text-gray-700">Custom Source</label>
               <input
@@ -151,17 +183,17 @@ const TransactionModal = ({ isOpen, onClose, transactionsData, setTransactionsDa
           </div>
 
           {/* Conditional Debit/Credit Field */}
-          {formData.type === 'Income' ? (
+          {formData.type === "Income" ? (
             <div className="mb-4">
               <label className="block text-gray-700">Credit</label>
               <input
                 type="number"
                 name="credit"
-                value={formData.credit ? formData.credit : ''}
+                value={formData.credit ? formData.credit : ""}
                 onChange={handleChange}
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter credit amount"
-                required={formData.type === 'Income'}
+                required={formData.type === "Income"}
                 min="0"
               />
             </div>
@@ -171,15 +203,58 @@ const TransactionModal = ({ isOpen, onClose, transactionsData, setTransactionsDa
               <input
                 type="number"
                 name="debit"
-                value={formData.debit ? formData.debit : ''}
+                value={formData.debit ? formData.debit : ""}
                 onChange={handleChange}
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter debit amount"
-                required={formData.type === 'Expenditure'}
+                required={formData.type === "Expenditure"}
                 min="0"
               />
             </div>
           )}
+
+          {/* Mode Radio Buttons */}
+          <div className="mb-4">
+            <label className="block text-gray-700">Mode</label>
+            <div className="flex space-x-4">
+              <label className="inline-flex items-center">
+                <input
+                  type="radio"
+                  name="mode"
+                  value="Online"
+                  checked={formData.mode === "Online"}
+                  onChange={handleChange}
+                  className="form-radio h-4 w-4 text-blue-500"
+                  required
+                />
+                <span className="ml-2">Online</span>
+              </label>
+              <label className="inline-flex items-center">
+                <input
+                  type="radio"
+                  name="mode"
+                  value="Cash"
+                  checked={formData.mode === "Cash"}
+                  onChange={handleChange}
+                  className="form-radio h-4 w-4 text-blue-500"
+                  required
+                />
+                <span className="ml-2">Cash</span>
+              </label>
+              <label className="inline-flex items-center">
+                <input
+                  type="radio"
+                  name="mode"
+                  value="Credit Card"
+                  checked={formData.mode === "Credit Card"}
+                  onChange={handleChange}
+                  className="form-radio h-4 w-4 text-blue-500"
+                  required
+                />
+                <span className="ml-2">Credit Card</span>
+              </label>
+            </div>
+          </div>
 
           {/* Modal Footer */}
           <div className="flex justify-end">

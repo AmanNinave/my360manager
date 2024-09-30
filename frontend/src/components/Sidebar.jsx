@@ -1,5 +1,11 @@
-import React from 'react';
-import { HomeIcon, UserGroupIcon, Cog6ToothIcon, ChartBarSquareIcon, ArrowRightOnRectangleIcon } from '@heroicons/react/24/solid'; // Correct v2 imports
+import React from "react";
+import {
+  HomeIcon,
+  UserGroupIcon,
+  Cog6ToothIcon,
+  ChartBarSquareIcon,
+  ArrowRightOnRectangleIcon,
+} from "@heroicons/react/24/solid"; // Correct v2 imports
 
 export const Sidebar = () => {
   return (

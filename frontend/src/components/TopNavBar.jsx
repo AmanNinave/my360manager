@@ -1,6 +1,11 @@
-import React from 'react';
-import { BellIcon, MagnifyingGlassIcon, UserCircleIcon, ArrowRightOnRectangleIcon } from '@heroicons/react/24/solid'; // Correct v2 imports
-import { Link, useNavigate } from 'react-router-dom';
+import React from "react";
+import {
+  BellIcon,
+  MagnifyingGlassIcon,
+  UserCircleIcon,
+  ArrowRightOnRectangleIcon,
+} from "@heroicons/react/24/solid"; // Correct v2 imports
+import { Link, useNavigate } from "react-router-dom";
 
 export const TopNavBar = () => {
   const navigate = useNavigate();
@@ -8,26 +13,29 @@ export const TopNavBar = () => {
     e.preventDefault(); // Prevent page reload
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_IP}/api/auth/logout`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include'
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_IP}/api/auth/logout`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
+      );
 
       if (!response.ok) {
-        throw new Error('Login failed!'); // Handle non-200 response
+        throw new Error("Login failed!"); // Handle non-200 response
       }
 
       const data = await response.json();
       // Assume the response contains a token or user data
       console.log(data); // Log the response for debugging
 
-      navigate('/login'); // Navigate to the home page on successful login
+      navigate("/login"); // Navigate to the home page on successful login
     } catch (error) {
-      console.error('Error:', error);
-      alert('Login failed! Please try again.'); // Notify user of failure
+      console.error("Error:", error);
+      alert("Login failed! Please try again."); // Notify user of failure
     }
   };
 
@@ -56,7 +64,10 @@ export const TopNavBar = () => {
         </button>
 
         {/* Logout Icon */}
-        <button onClick={handleLogout} className="p-2 rounded-full hover:bg-gray-100">
+        <button
+          onClick={handleLogout}
+          className="p-2 rounded-full hover:bg-gray-100"
+        >
           <ArrowRightOnRectangleIcon className="w-6 h-6 text-red-500" />
         </button>
       </div>
