@@ -7,6 +7,7 @@ import {
   TrashIcon,
 } from "@heroicons/react/24/outline";
 import TransactionModal from "./TransactionModelBox.jsx";
+import { ArrowPathIcon } from "@heroicons/react/24/solid";
 
 const TransactionTable = ({
   transactionsData,
@@ -21,7 +22,7 @@ const TransactionTable = ({
     remark: "",
     debit: 0,
     credit: 0,
-    money_transfer_ammount : 0,
+    money_transfer_amount : 0,
     mode: "Online",
     isEdit: false,
   });
@@ -93,7 +94,7 @@ const TransactionTable = ({
       remark: "",
       debit: 0,
       credit: 0,
-      money_transfer_ammount : 0,
+      money_transfer_amount : 0,
       mode: "Online",
       isEdit: false,
     });
@@ -302,16 +303,18 @@ const TransactionTable = ({
                 const amount =
                   transaction.type === "Income"
                     ? transaction.credit
-                    : transaction.debit;
-                if (amount === 0) return null; // Ignore rows with zero amounts
+                    : transaction.type === "Expenditure"
+                    ? transaction.debit 
+                    : transaction.money_transfer_amount
+                if (amount === 0 ) return null; // Ignore rows with zero amounts
 
                 return (
                   <tr
                     key={index}
                     className={
-                      transaction.type === "Income"
-                        ? "bg-green-100"
-                        : "bg-red-100"
+                      transaction.type === "Income" ? "bg-green-100"
+                        : transaction.type === "Expenditure" ? "bg-red-200"
+                        : "bg-blue-100"
                     }
                   >
                     <td
@@ -331,8 +334,10 @@ const TransactionTable = ({
                     <td
                       className="py-2 px-4 border-b border-r border-gray-200"
                       style={{ width: "10%" }}
-                    >
-                      {transaction.source}
+                    > 
+                      {transaction.source?.length > 8
+                        ? transaction.source.slice(0, 8) + "..."
+                        : transaction.source}
                     </td>
                     <td
                       className="py-2 px-4 border-b border-r border-gray-200"
@@ -346,9 +351,11 @@ const TransactionTable = ({
                     >
                       {amount.toFixed(1)}
                       {transaction.type === "Income" ? (
-                        <PlusCircleIcon className="h-5 w-5 text-green-600 inline-block ml-2" />
+                        <PlusCircleIcon className="h-5 w-5 text-green-900 inline-block ml-2" />
+                      ) : transaction.type === "Expenditure" ? (
+                        <MinusCircleIcon className="h-5 w-5 text-red-900 inline-block ml-2" />
                       ) : (
-                        <MinusCircleIcon className="h-5 w-5 text-red-600 inline-block ml-2" />
+                        <ArrowPathIcon className="h-5 w-5 text-blue-500 inline-block ml-2" />
                       )}
                     </td>
                     <td
