@@ -14,10 +14,12 @@ export const expenditureSources = [
   "Health",
   "Travel",
   "Investment",
+  "Shop",
   "Construction",
   "Medicine",
   "Electricity",
   "Loan Payment",
   "Credit Card",
+  "Other",
   "Custom",
 ];
