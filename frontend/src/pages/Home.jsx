@@ -12,7 +12,7 @@ const Home = () => {
       {/* Main content area */}
       <div className="flex-1 flex flex-col">
         {/* Top Navbar */}
-        <TopNavBar />
+        <TopNavBar /> 
 
         {/* Main content */}
         <div className="p-6 bg-gray-100 max-h-[100vh]  flex-1 overflow-y-auto">
