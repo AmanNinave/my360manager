@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   incomeSources,
   expenditureSources,
+  moneyTransferSources,
 } from "../constants/finance.constants.js";
 
 const TransactionModal = ({
@@ -68,7 +69,7 @@ const TransactionModal = ({
             )
           );
         } else {
-          setTransactionsData([ result.transaction , ...transactionsData ]);
+          setTransactionsData([result.transaction, ...transactionsData]);
         }
       } else {
         console.error("Error submitting transaction", response.status);
@@ -124,6 +125,18 @@ const TransactionModal = ({
                 />
                 <span className="ml-2">Expenditure</span>
               </label>
+              <label className="inline-flex items-center">
+                <input
+                  type="radio"
+                  name="type"
+                  value="Money Transfer"
+                  checked={formData.type === "Money Transfer"}
+                  onChange={handleChange}
+                  className="form-radio h-4 w-4 text-blue-500"
+                  required
+                />
+                <span className="ml-2">Money Transfer</span>
+              </label>
             </div>
           </div>
 
@@ -144,11 +157,18 @@ const TransactionModal = ({
                       {source}
                     </option>
                   ))
-                : expenditureSources.map((source) => (
+                : formData.type === "Expenditure"
+                ? expenditureSources.map((source) => (
                     <option key={source} value={source}>
                       {source}
                     </option>
-                  ))}
+                  ))
+                : moneyTransferSources.map((source) => (
+                    <option key={source} value={source}>
+                      {source}
+                    </option>
+                  ))
+              }
             </select>
           </div>
 
@@ -197,7 +217,7 @@ const TransactionModal = ({
                 min="0"
               />
             </div>
-          ) : (
+          ) : formData.type === "Expenditure" ? (
             <div className="mb-4">
               <label className="block text-gray-700">Debit</label>
               <input
@@ -211,7 +231,22 @@ const TransactionModal = ({
                 min="0"
               />
             </div>
-          )}
+          ) : (
+            <div className="mb-4">
+              <label className="block text-gray-700">Amount</label>
+              <input
+                type="number"
+                name="money_transfer_amount"
+                value={formData.money_transfer_amount ? formData.money_transfer_amount : ""}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter amount"
+                required={formData.type === "Money Transfer"}
+                min="0"
+              />
+            </div>
+          )
+          }
 
           {/* Mode Radio Buttons */}
           <div className="mb-4">

@@ -23,3 +23,11 @@ export const expenditureSources = [
   "Other",
   "Custom",
 ];
+
+export const moneyTransferSources = [
+  "Canara Bank",
+  "ICICI Bank",
+  "Cash",
+  "Axis CC",
+  "ICICI CC"
+]

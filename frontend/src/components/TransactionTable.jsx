@@ -21,10 +21,11 @@ const TransactionTable = ({
     remark: "",
     debit: 0,
     credit: 0,
+    money_transfer_ammount : 0,
     mode: "Online",
     isEdit: false,
   });
-
+  console.log("t" , transactionsData)
   // State to store filter values
   const [typeFilter, setTypeFilter] = useState("");
   const [modeFilter, setModeFilter] = useState("");
@@ -92,6 +93,7 @@ const TransactionTable = ({
       remark: "",
       debit: 0,
       credit: 0,
+      money_transfer_ammount : 0,
       mode: "Online",
       isEdit: false,
     });
