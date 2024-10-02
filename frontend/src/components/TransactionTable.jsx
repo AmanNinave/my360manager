@@ -22,7 +22,7 @@ const TransactionTable = ({
     remark: "",
     debit: 0,
     credit: 0,
-    money_transfer_amount : 0,
+    moneyTransferAamount : 0,
     mode: "Online",
     isEdit: false,
   });
@@ -94,7 +94,7 @@ const TransactionTable = ({
       remark: "",
       debit: 0,
       credit: 0,
-      money_transfer_amount : 0,
+      moneyTransferAamount : 0,
       mode: "Online",
       isEdit: false,
     });
@@ -305,7 +305,7 @@ const TransactionTable = ({
                     ? transaction.credit
                     : transaction.type === "Expenditure"
                     ? transaction.debit 
-                    : transaction.money_transfer_amount
+                    : transaction.moneyTransferAamount
                 if (amount === 0 ) return null; // Ignore rows with zero amounts
 
                 return (

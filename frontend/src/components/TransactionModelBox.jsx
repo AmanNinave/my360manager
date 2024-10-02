@@ -236,8 +236,8 @@ const TransactionModal = ({
               <label className="block text-gray-700">Amount</label>
               <input
                 type="number"
-                name="money_transfer_amount"
-                value={formData.money_transfer_amount ? formData.money_transfer_amount : ""}
+                name="moneyTransferAamount"
+                value={formData.moneyTransferAamount ? formData.moneyTransferAamount : ""}
                 onChange={handleChange}
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter amount"

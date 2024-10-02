@@ -9,7 +9,13 @@ const transactionSchema = new mongoose.Schema({
     type: {
         type: String,
         required: true,
-        enum: ["Income", "Expenditure" , "Money Transfer"]
+        enum: ["Income", "Expenditure" , "Money Transfer" , "Debt" , "Lend"]
+    },
+    sender: {
+        type: String
+    },
+    receiver: {
+        type: String
     },
     mode: {
         type: String,
@@ -44,7 +50,7 @@ const transactionSchema = new mongoose.Schema({
         //     message: "Credit amount must be provided for 'Income' type and greater than 0."
         // }
     },
-    money_transfer_amount : {
+    moneyTransferAamount : {
         type : Number,
         default : 0
     }
