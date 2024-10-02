@@ -7,7 +7,8 @@ import path from 'path'
 import connectToDatabase from "./db/connectToDatabase.js";
 
 import authRoutes from './routes/auth.routes.js'
-import financeRoutes from './routes/finance.routes.js'
+import transactionRoutes from './routes/transactions.routes.js'
+import accountRoutes from "./models/account.model.js";
 
 dotenv.config();
 
@@ -24,7 +25,8 @@ app.use(cors({
 app.use(express.json());                    // to parse incomming requests with JSON payloads ( from req.body );
 app.use(cookieParser());
 app.use("/api/auth" , authRoutes );
-app.use("/api/finance" , financeRoutes)
+app.use("/api/finance" , transactionRoutes)
+app.use("/api/finance/accounts" , accountRoutes)
 
 app.use(express.static(path.join(__dirname, "/frontend/dist")))
 
