@@ -94,3 +94,23 @@ export const logoutUser = ( req , res)=>{
         res.status(500).json({error : "Internal server error"});
     }
 }
+
+// Update user details by ID
+export const updateUser = async (req, res) => {
+    const { fullName, username, email, gender, profilePic, defaultSender, defaultReceiver } = req.body;
+    const userId = req.user._id;
+    try {
+        // Find the user by ID and update the fields provided in the request body
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            { fullName, username, email, gender, profilePic, defaultSender, defaultReceiver },
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedUser) return res.status(404).json({ message: 'User not found' });
+
+        res.status(200).json(updatedUser);
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+};

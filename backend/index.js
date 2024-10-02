@@ -8,7 +8,7 @@ import connectToDatabase from "./db/connectToDatabase.js";
 
 import authRoutes from './routes/auth.routes.js'
 import transactionRoutes from './routes/transactions.routes.js'
-import accountRoutes from "./models/account.model.js";
+import accountRoutes from "./routes/account.routes.js";
 
 dotenv.config();
 
