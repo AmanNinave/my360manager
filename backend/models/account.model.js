@@ -32,6 +32,6 @@ const accountSchema = new mongoose.Schema({
 }, {timestamps : true });
 
 
-const account = mongoose.model("User" , accountSchema );
+const account = mongoose.model("Account" , accountSchema );
 
 export default account;

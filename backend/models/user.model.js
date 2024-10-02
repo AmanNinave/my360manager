@@ -23,11 +23,19 @@ const userSchema = new mongoose.Schema({
     gender :{
         type : String,
         required : true,
-        emum : [ "male" , "female" ]
+        emum : [ "male" , "female" , "Other" ]
     },
     profilePic : {
         type : String , 
         default : ""
+    },
+    defaultSender : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Account",
+    },
+    defaultReceiver : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Account",
     }
 
 }, {timestamps : true });

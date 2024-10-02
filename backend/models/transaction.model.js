@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { transactionModes, transactionTypes } from "../constants/constants.js";
 
 const transactionSchema = new mongoose.Schema({
     userId: {
@@ -9,24 +10,25 @@ const transactionSchema = new mongoose.Schema({
     type: {
         type: String,
         required: true,
-        enum: ["Income", "Expenditure" , "Money Transfer" , "Debt" , "Lend"]
+        enum: transactionTypes
     },
     sender: {
-        type: String
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Account",
     },
     receiver: {
-        type: String
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Account",
     },
     mode: {
         type: String,
-        required: true,
-        enum: ["Online", "Cash", "Credit Card"]
+        enum: transactionModes
     },
-    source: {
+    category: {
         type: String,
         required: true
     },
-    remark: {
+    description: {
         type: String,
         required: true
     },
