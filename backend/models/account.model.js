@@ -1,6 +1,9 @@
 import mongoose from "mongoose";
 
 const accountSchema = new mongoose.Schema({
+    accountTitle :{
+        type : String,
+    },
     fullName :{
         type : String,
     },
@@ -8,6 +11,9 @@ const accountSchema = new mongoose.Schema({
         type : String,
     },
     accountNumber :{
+        type : String,
+    },
+    upiId :{
         type : String,
     },
     email :{
